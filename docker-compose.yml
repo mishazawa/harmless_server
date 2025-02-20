@@ -1,0 +1,53 @@
+services:
+  tor:
+    image: tor:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.tor
+    command: tor -f /etc/tor/torrc
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    container_name: tor
+    restart: unless-stopped
+    networks:
+      - caddy_net
+    volumes:
+      - ./tor/config:/etc/tor
+      - ./tor/data:/var/lib/tor
+
+  caddy:
+    # Use the caddy:latest image from Docker Hub
+    image: caddy:latest
+    # Restart policy: restart the container unless explicitly stopped
+    restart: unless-stopped
+    container_name: caddy_proxy
+    volumes:
+      # Mount the host Caddyfile
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - caddy_net
+
+  harmless_server:
+    image: harmless_server:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    restart: always
+    volumes:
+      - .:/app
+    networks:
+      - caddy_net
+
+volumes:
+  # persist data caddy_data
+  caddy_data:
+  # caddy_config Docker volume
+  caddy_config:
+networks:
+  caddy_net:

@@ -1,0 +1,15 @@
+(common) {
+    header /* {
+        -Server
+    }
+}
+
+:80 {
+    import common
+    reverse_proxy harmless_server:9000
+}
+
+:443 {
+    import common
+    reverse_proxy harmless_server:9000
+}
