@@ -16,3 +16,4 @@ RUN sed -i "s/<DISTRIBUTION>/$(lsb_release -sc)/g" /etc/apt/sources.list.d/tor.l
 RUN curl -1sLf 'https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc' |  gpg --dearmor -o /usr/share/keyrings/deb.torproject.org-keyring.gpg
 RUN apt update 
 RUN apt install -y tor deb.torproject.org-keyring
+

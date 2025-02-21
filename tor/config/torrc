@@ -1,3 +1,4 @@
+SocksPort tor:9050
 HiddenServiceDir /var/lib/tor/site/
 HiddenServicePort 80 caddy:80
 HiddenServicePort 443 caddy:443
